@@ -198,12 +198,14 @@ void CPolymeterDoc::ReadProperties(LPCTSTR pszPath)
 		CTrack	trk(true);	// initialize to defaults
 		CString	sTrkID;
 		sTrkID.Format(RK_TRACK_IDX, iTrack);
+		fIni.GetUnicodeString(sTrkID, _T("Name"), trk.m_sName);
 		#define TRACKDEF(proptype, type, prefix, name, defval, minval, maxval, itemopt, items) \
 			if (PT_##proptype == PT_ENUM) \
 				ReadEnum(fIni, sTrkID, _T(#name), trk.m_##prefix##name, itemopt, items); \
 			else \
 				fIni.Get(sTrkID, _T(#name), trk.m_##prefix##name);
 		#define TRACKDEF_EXCLUDE_LENGTH	// exclude track length
+		#define TRACKDEF_EXCLUDE_NAME	// exclude track name
 		#include "TrackDef.h"		// generate code to read track properties
 		trk.m_clrCustom = fIni.GetInt(sTrkID, RK_TRACK_COLOR, -1);
 		int	nLength = fIni.GetInt(sTrkID, RK_TRACK_LENGTH, INIT_STEPS);
@@ -261,12 +263,14 @@ void CPolymeterDoc::WriteProperties(LPCTSTR pszPath) const
 		const CTrack&	trk = m_Seq.GetTrack(iTrack);
 		CString	sTrkID;
 		sTrkID.Format(RK_TRACK_IDX, iTrack);
+		fIni.WriteUnicodeString(sTrkID, _T("Name"), trk.m_sName);
 		#define TRACKDEF(proptype, type, prefix, name, defval, minval, maxval, itemopt, items) \
 			if (PT_##proptype == PT_ENUM) \
 				WriteEnum(fIni, sTrkID, _T(#name), trk.m_##prefix##name, itemopt, items); \
 			else \
 				fIni.Put(sTrkID, _T(#name), trk.m_##prefix##name);
 		#define TRACKDEF_EXCLUDE_LENGTH	// exclude track length
+		#define TRACKDEF_EXCLUDE_NAME	// exclude track name
 		#include "TrackDef.h"		// generate code to write track properties
 		if (static_cast<int>(trk.m_clrCustom) >= 0)	// if track color specified
 			fIni.WriteInt(sTrkID, RK_TRACK_COLOR, trk.m_clrCustom);

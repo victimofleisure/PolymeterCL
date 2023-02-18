@@ -41,6 +41,7 @@
 		31		15feb22	add validate modulations method
 		32		19feb22	use INI file class directly instead of via profile
 		33		19may22	add offset method to loop range class
+		34		16feb23	add special handling for non-ASCII characters
 
 */
 
@@ -65,6 +66,7 @@ public:
 	enum {
 		INIT_STEPS = 32,			// initial number of steps
 		MIN_DUB_TIME = INT_MIN,		// minimum dub time
+		MAX_QUANT = SHRT_MAX,		// maximum quant in ticks
 	};
 	enum {	// step bitmasks; these define the layout of a sequencer step
 		// for track types other than note, the velocity carries the event's
@@ -726,6 +728,8 @@ public:
 	void	GetModulationTargets(CModulationArrayArray& arrTarget) const;
 	bool	CheckModulations(CModulationErrorArray& arrError) const;
 	void	GetLinkedTracks(const CIntArrayEx& arrSelection, CPackedModulationArray& arrMod, UINT nLinkFlags = MODLINKF_SOURCE, int nLevels = 1) const;
+	bool	TrackNamesAreASCII() const;
+	bool	TrackNamesAreASCII(const CIntArrayEx& arrSelection) const;
 
 protected:
 // Types
