@@ -60,10 +60,12 @@ public:
 	enum {
 		F_OUT_DEVICE,
 		F_EXPORT,
+		F_EXPORT_TIME_KEY_SIGS,
 		FLAGS
 	};
 	CString	m_sExportPath;
 	int		m_iOutputDevice;
+	BOOL	m_bExportTimeKeySigs;
 
 protected:
 	static const LPCTSTR pszFlags[FLAGS];
@@ -74,11 +76,13 @@ CMyCommandLineInfo::CMyCommandLineInfo()
 {
 	m_iFlag = -1;
 	m_iOutputDevice = -1;
+	m_bExportTimeKeySigs = true;
 }
 
 const LPCTSTR CMyCommandLineInfo::pszFlags[FLAGS] = {
 	_T("D"),
 	_T("E"),
+	_T("ETKS"),	// for regression testing
 };
 
 void CMyCommandLineInfo::ParseParam(const TCHAR* pszParam, BOOL bFlag, BOOL bLast)
@@ -98,6 +102,9 @@ void CMyCommandLineInfo::ParseParam(const TCHAR* pszParam, BOOL bFlag, BOOL bLas
 			break;
 		case F_EXPORT:
 			m_sExportPath = pszParam;
+			break;
+		case F_EXPORT_TIME_KEY_SIGS:
+			_stscanf_s(pszParam, _T("%d"), &m_bExportTimeKeySigs);
 			break;
 		}
 	}
@@ -123,6 +130,7 @@ int _tmain(int argc, TCHAR* argv[], TCHAR* envp[])
 				if (argc > 1) {
 					CMyCommandLineInfo	infoCmdLine;
 					theApp.ParseCommandLine(infoCmdLine);
+					CSequencer::SetExportTimeKeySigs(infoCmdLine.m_bExportTimeKeySigs != 0);
 					LPCTSTR	pszDocPath = argv[1];
 					CPolymeterDoc	doc;
 					gMainFrame.m_pActiveDoc = &doc;

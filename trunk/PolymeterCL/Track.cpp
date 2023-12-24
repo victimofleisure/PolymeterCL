@@ -44,6 +44,8 @@
 		34		20oct22	support offset modulation of controller tracks
 		35		18dec22	in tick dependency scaling, clamp quant to its range
 		36		16feb23	add special handling for non-ASCII characters
+		37		25sep23	fix warning in LoopCheckRecurse
+		38		19dec23	replace track type member usage with accessor
 
 */
 
@@ -760,7 +762,7 @@ bool CImportTrackArray::ImportMidiFile(const CMidiFile::CMidiTrackArray& arrInTr
 		CTrack&	trk = arrOutTrack[iTrack];
 		trk.m_arrStep.SetSize(nMaxSteps);	// make all tracks as long as longest track
 		arrTrackPtr[iTrack] = &trk;	// init track pointer
-		if (trk.m_iType != TT_NOTE) {	// if track type isn't note
+		if (!trk.IsNote()) {	// if track type isn't note
 			UINT	nCmd = (trk.m_iType + MIDI_CVM_NOTE_ON + 8) << 4;	// track types start with note on
 			int	nKey = MAKELONG(trk.m_nNote, MAKEWORD(trk.m_nChannel, nCmd));	// note/control, channel, command
 			TRACK_INFO	info;
@@ -1107,7 +1109,7 @@ bool CTrackArray::CheckModulations(CModulationErrorArray& arrError) const
 			int	iTargetTrack = mod.m_iSource;	// source is actually target; see above
 			const CTrack&	trkTarget = GetAt(iTargetTrack);
 			bool	bIsUnsupportedType = false;	// assume success
-			if (trkTarget.m_iType == TT_MODULATOR) {	// if target track is a modulator
+			if (trkTarget.IsModulator()) {	// if target track is a modulator
 				if (!mod.IsRecursiveType()) {	// if modulation type doesn't support recursion
 					if (mod.m_iType == CTrackBase::MT_Note) {	// if note modulation
 						// for each of target track's modulation targets (sub-modulations)
@@ -1297,8 +1299,8 @@ bool CTrackArray::CModulationCrawler::LoopCheckRecurse(int iTrack)
 		const CModulation& mod = trk.m_arrModulator[iMod];
 		if (mod.m_iSource >= 0) {	// if valid modulation source track index
 			if (m_arrIsCrawled[mod.m_iSource]) {	// if source track is being crawled
-				CPackedModulation	mod(mod.m_iType, mod.m_iSource, iTrack);
-				m_arrMod.Add(mod);	// add offending modulation info to caller's array
+				CPackedModulation	modBad(mod.m_iType, mod.m_iSource, iTrack);
+				m_arrMod.Add(modBad);	// add offending modulation info to caller's array
 				return false;	// infinite loop detected; abort crawl
 			}
 			if (!LoopCheckRecurse(mod.m_iSource)) {	// if source iteration fails
