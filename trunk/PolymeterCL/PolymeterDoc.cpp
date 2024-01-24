@@ -82,6 +82,16 @@
 		72		05feb22	bump file version for tie mapping
 		73		15feb22	add check modulations command
 		74		19feb22	use INI file class directly instead of via profile
+		75		19may22	add loop ruler selection attribute
+		76		05jul22	use wrapper class to save and restore focus
+		77		25oct22	add command to select all unmuted tracks
+		78		16dec22	add quant string conversions that support fractions
+		79		16feb23	add special handling for non-ASCII characters
+		80		17feb23	add replace range to velocity transform
+		81		20sep23	in track fill, fix divide by zero errors
+		82		27nov23	specify key signature in OnFileExport
+		83		19dec23	bump file version for internal track type
+		84		24jan24	use sequencer's warning error attribute
 
 */
 
@@ -99,7 +109,7 @@
 
 // file versioning
 #define FILE_ID				_T("Polymeter")
-#define	FILE_VERSION		20
+#define	FILE_VERSION		21
 
 // file format keys
 #define RK_FILE_ID			_T("FileID")

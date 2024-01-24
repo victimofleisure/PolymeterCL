@@ -44,6 +44,9 @@
 		34		23nov21	add method to export tempo map
 		35		15feb22	add check modulations command
 		36		19feb22	use INI file class directly instead of via profile
+		37		19may22	add loop ruler selection attribute
+		38		25oct22	add command to select all unmuted tracks
+		39		16dec22	add quant string conversions that support fractions
 
 */
 
