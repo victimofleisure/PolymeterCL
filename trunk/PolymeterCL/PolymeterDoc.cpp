@@ -173,14 +173,14 @@ void CPolymeterDoc::ReadProperties(LPCTSTR pszPath)
 	if (sFileID != FILE_ID) {	// if unexpected file ID
 		CString	msg;
 		AfxFormatString1(msg, IDS_DOC_BAD_FORMAT, pszPath);
-		AfxMessageBox(msg);
+		AfxMessageBox(msg, MB_OK, IDS_DOC_BAD_FORMAT);
 		AfxThrowUserException();	// fatal error
 	}
 	fIni.Get(RK_FILE_VERSION, m_nFileVersion);
 	if (m_nFileVersion > FILE_VERSION) {	// if file is from a newer version
 		CString	msg;
 		AfxFormatString1(msg, IDS_DOC_NEWER_VERSION, pszPath);
-		AfxMessageBox(msg);
+		AfxMessageBox(msg, MB_OK, IDS_DOC_NEWER_VERSION);
 	}
 	#define PROPDEF(group, subgroup, proptype, type, name, initval, minval, maxval, itemname, items) \
 		if (PT_##proptype == PT_ENUM) \
