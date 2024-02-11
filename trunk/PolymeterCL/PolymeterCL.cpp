@@ -1,3 +1,18 @@
+// Copyleft 2022 Chris Korda
+// This program is free software; you can redistribute it and/or modify it
+// under the terms of the GNU General Public License as published by the Free
+// Software Foundation; either version 2 of the License, or any later version.
+/*
+        chris korda
+ 
+		revision history:
+		rev		date	comments
+        00      27jan22	initial version
+		01		27nov23	add flag for export's time and key signature
+		02		10feb24	add flag for export's all notes off behavior
+
+*/
+
 // PolymeterCL.cpp : Defines the entry point for the console application.
 //
 
@@ -19,6 +34,12 @@ using namespace std;
 CPolymeterApp	theApp;
 
 CMainFrame	gMainFrame;
+
+int AFXAPI AfxMessageBox(LPCTSTR lpszText, UINT nType, UINT nIDHelp)
+{
+	_tprintf(_T("%s\n"), lpszText);	// redirect message to console
+	return 0;
+}
 
 CPolymeterApp::CPolymeterApp()
 { 
@@ -53,6 +74,11 @@ bool Export(CPolymeterDoc& doc, LPCTSTR szPath)
 	return doc.m_Seq.Export(szPath, doc.m_nSongLength, doc.m_Seq.HasDubs(), doc.m_nStartPos);
 }
 
+enum {	// test flags
+	TF_TIME_KEY_SIG		= 0x0001,	// export includes time and key signatures
+	TF_ALL_NOTES_OFF	= 0x0002,	// export turns off all notes at end of file
+};
+
 class CMyCommandLineInfo : public CCommandLineInfo {
 public:
 	CMyCommandLineInfo();
@@ -60,12 +86,12 @@ public:
 	enum {
 		F_OUT_DEVICE,
 		F_EXPORT,
-		F_EXPORT_TIME_KEY_SIGS,
+		F_TEST_FLAGS,
 		FLAGS
 	};
 	CString	m_sExportPath;
 	int		m_iOutputDevice;
-	BOOL	m_bExportTimeKeySigs;
+	UINT	m_nTestFlags;
 
 protected:
 	static const LPCTSTR pszFlags[FLAGS];
@@ -76,13 +102,13 @@ CMyCommandLineInfo::CMyCommandLineInfo()
 {
 	m_iFlag = -1;
 	m_iOutputDevice = -1;
-	m_bExportTimeKeySigs = true;
+	m_nTestFlags = UINT_MAX;
 }
 
 const LPCTSTR CMyCommandLineInfo::pszFlags[FLAGS] = {
 	_T("D"),
 	_T("E"),
-	_T("ETKS"),	// for regression testing
+	_T("TF"),	// test flags
 };
 
 void CMyCommandLineInfo::ParseParam(const TCHAR* pszParam, BOOL bFlag, BOOL bLast)
@@ -103,8 +129,8 @@ void CMyCommandLineInfo::ParseParam(const TCHAR* pszParam, BOOL bFlag, BOOL bLas
 		case F_EXPORT:
 			m_sExportPath = pszParam;
 			break;
-		case F_EXPORT_TIME_KEY_SIGS:
-			_stscanf_s(pszParam, _T("%d"), &m_bExportTimeKeySigs);
+		case F_TEST_FLAGS:
+			_stscanf_s(pszParam, _T("%x"), &m_nTestFlags);	// hexadecimal
 			break;
 		}
 	}
@@ -130,7 +156,8 @@ int _tmain(int argc, TCHAR* argv[], TCHAR* envp[])
 				if (argc > 1) {
 					CMyCommandLineInfo	infoCmdLine;
 					theApp.ParseCommandLine(infoCmdLine);
-					CSequencer::SetExportTimeKeySigs(infoCmdLine.m_bExportTimeKeySigs != 0);
+					CSequencer::SetExportTimeKeySigs((infoCmdLine.m_nTestFlags & TF_TIME_KEY_SIG) != 0);
+					CSequencer::SetExportAllNotesOff((infoCmdLine.m_nTestFlags & TF_ALL_NOTES_OFF) != 0);
 					LPCTSTR	pszDocPath = argv[1];
 					CPolymeterDoc	doc;
 					gMainFrame.m_pActiveDoc = &doc;

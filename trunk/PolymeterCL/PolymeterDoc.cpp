@@ -92,6 +92,7 @@
 		82		27nov23	specify key signature in OnFileExport
 		83		19dec23	bump file version for internal track type
 		84		24jan24	use sequencer's warning error attribute
+		85		29jan24	add class to save and restore track selection
 
 */
 
