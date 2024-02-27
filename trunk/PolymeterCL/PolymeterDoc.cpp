@@ -93,6 +93,8 @@
 		83		19dec23	bump file version for internal track type
 		84		24jan24	use sequencer's warning error attribute
 		85		29jan24	add class to save and restore track selection
+		86		16feb24	move track color message handlers here
+		87		25feb24	disable next and prev convergence if no tracks
 
 */
 

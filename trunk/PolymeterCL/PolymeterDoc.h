@@ -48,6 +48,8 @@
 		38		25oct22	add command to select all unmuted tracks
 		39		16dec22	add quant string conversions that support fractions
 		40		29jan24	add class to save and restore track selection
+		41		16feb24	move track color message handlers here
+		42		25feb24	single handler for next and prev convergence
 
 */
 
