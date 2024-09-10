@@ -95,6 +95,7 @@
 		85		29jan24	add class to save and restore track selection
 		86		16feb24	move track color message handlers here
 		87		25feb24	disable next and prev convergence if no tracks
+		88		01sep24	add duplicate note methods; bump file version to 22
 
 */
 
@@ -112,7 +113,7 @@
 
 // file versioning
 #define FILE_ID				_T("Polymeter")
-#define	FILE_VERSION		21
+#define	FILE_VERSION		22
 
 // file format keys
 #define RK_FILE_ID			_T("FileID")
@@ -397,8 +398,11 @@ inline void CPolymeterDoc::WriteEnum(CIniFile&, LPCTSTR, LPCTSTR, const T&, cons
 void CPolymeterDoc::UpdateChannelEvents()
 {
 	CDWordArrayEx	arrMidiEvent;
-	m_arrChannel.GetMidiEvents(arrMidiEvent);
+	USHORT	nDuplicateNoteMethods;
+	USHORT	nOverlapMethods = m_arrChannel.GetMidiEvents(arrMidiEvent, nDuplicateNoteMethods);
 	m_Seq.SetInitialMidiEvents(arrMidiEvent);
+	m_Seq.SetNoteOverlapMethods(nOverlapMethods);
+	m_Seq.SetDuplicateNoteMethods(nDuplicateNoteMethods);
 }
 
 CString	GetMidiOutErrorString(MMRESULT mmrError)
