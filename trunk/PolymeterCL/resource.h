@@ -62,16 +62,17 @@
 #define IDS_TRK_Offset                  256
 #define IDS_TRK_Position                257
 #define IDS_TRK_Quant                   258
-#define IDS_TRK_Range                   259
-#define IDS_TRK_RangeStart              260
-#define IDS_TRK_RangeType               261
-#define IDS_TRK_Scale                   262
-#define IDS_TRK_Swing                   263
-#define IDS_TRK_Tempo                   264
-#define IDS_TRK_Type                    265
-#define IDS_TRK_Velocity                266
-#define IDS_TRK_Voicing                 267
-#define IDS_TYPE_TRACK                  268
+#define IDS_TRK_Queue                   259
+#define IDS_TRK_Range                   260
+#define IDS_TRK_RangeStart              261
+#define IDS_TRK_RangeType               262
+#define IDS_TRK_Scale                   263
+#define IDS_TRK_Swing                   264
+#define IDS_TRK_Tempo                   265
+#define IDS_TRK_Type                    266
+#define IDS_TRK_Velocity                267
+#define IDS_TRK_Voicing                 268
+#define IDS_TYPE_TRACK                  269
 #define ID_TRANSPORT_LOOP               32771
 #define ID_TRANSPORT_PAUSE              32772
 #define ID_TRANSPORT_PLAY               32773
@@ -82,7 +83,7 @@
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_3D_CONTROLS                1
-#define _APS_NEXT_RESOURCE_VALUE        269
+#define _APS_NEXT_RESOURCE_VALUE        270
 #define _APS_NEXT_COMMAND_VALUE         32775
 #define _APS_NEXT_CONTROL_VALUE         1001
 #define _APS_NEXT_SYMED_VALUE           101

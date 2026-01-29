@@ -113,7 +113,7 @@
 
 // file versioning
 #define FILE_ID				_T("Polymeter")
-#define	FILE_VERSION		22
+#define	FILE_VERSION		23
 
 // file format keys
 #define RK_FILE_ID			_T("FileID")
