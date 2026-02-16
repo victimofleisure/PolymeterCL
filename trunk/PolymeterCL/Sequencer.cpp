@@ -91,8 +91,8 @@ bool CSequencer::m_bExportAllNotesOff = true;
 #define STEP_VEL(step) ((step) & SB_VELOCITY)
 #define STEP_TIE(step) ((step) & SB_TIE)
 
-// ignore channel and note number; assume note off is note on message with zero velocity
-#define IS_NOTE_OFF(x) (((x) & (MIDI_STRM_MASK | MIDI_P2_MASK | MIDI_CMD_MASK)) == NOTE_ON)
+// assume note off is note on message with velocity of zero; ignore channel and note number
+#define IS_NOTE_OFF(msg) (((msg) & (MIDI_STRM_MASK | MIDI_P2_MASK | MIDI_CMD_MASK)) == NOTE_ON)
 
 CSequencer::CSequencer()
 {
