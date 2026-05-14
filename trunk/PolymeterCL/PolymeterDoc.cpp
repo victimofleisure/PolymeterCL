@@ -99,7 +99,7 @@
 		89		11jan26	in CreateModulation, add distribute option
 		90		18jan26	get quantization fraction from options
 		91		22jan26	add queue modulation type; bump file version to 23
-		92		14feb26	bump file version to 24 for step array RLE
+		92		14feb26	add run-length encoding; bump file version to 24
 
 */
 
